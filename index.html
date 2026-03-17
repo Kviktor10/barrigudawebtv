@@ -3,65 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Downloader | Minimal</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Download Center | JSON Powered</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
     <header>
-        <h1>Galeria de Formatos</h1>
-        <p>Selecione e baixe imagens em diferentes proporções.</p>
+        <h1>Banco de Ativos</h1>
+        <p>Carregando dados dinâmicos de arquivos.js</p>
     </header>
 
-    <main class="container">
-        <div class="card">
-            <div class="image-wrapper ratio-16-9">
-                <img src="https://picsum.photos/1920/1080" alt="Imagem 16:9">
-                <span class="badge">16:9</span>
-            </div>
-            <div class="card-footer">
-                <p>Wallpaper / YouTube</p>
-                <a href="https://picsum.photos/1920/1080" download="imagem_16_9.jpg" class="btn-download">Baixar Imagem</a>
-            </div>
-        </div>
+    <main id="galeria" class="grid-container"></main>
 
-        <div class="card">
-            <div class="image-wrapper ratio-9-16">
-                <img src="https://picsum.photos/1080/1920" alt="Imagem 9:16">
-                <span class="badge">9:16</span>
-            </div>
-            <div class="card-footer">
-                <p>Stories / TikTok</p>
-                <a href="https://picsum.photos/1080/1920" download="imagem_9_16.jpg" class="btn-download">Baixar Imagem</a>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="image-wrapper ratio-1-1">
-                <img src="https://picsum.photos/1080/1080" alt="Imagem 1:1">
-                <span class="badge">1:1</span>
-            </div>
-            <div class="card-footer">
-                <p>Instagram / Perfil</p>
-                <a href="https://picsum.photos/1080/1080" download="imagem_1_1.jpg" class="btn-download">Baixar Imagem</a>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="image-wrapper ratio-4-3">
-                <img src="https://picsum.photos/1024/768" alt="Imagem 4:3">
-                <span class="badge">4:3</span>
-            </div>
-            <div class="card-footer">
-                <p>Apresentação Clássica</p>
-                <a href="https://picsum.photos/1024/768" download="imagem_4_3.jpg" class="btn-download">Baixar Imagem</a>
-            </div>
-        </div>
-    </main>
-
-    <footer>
-        <p>&copy; 2026 - Ferramenta de Download Objetivo</p>
-    </footer>
-
+    <script src="assets/js/arquivos.js"></script>
+    <script src="assets/js/main.js"></script>
 </body>
 </html>
