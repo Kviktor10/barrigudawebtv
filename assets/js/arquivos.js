@@ -1,3 +1,4 @@
+// arquivos.js
 const bancoDeImagens = [
     {
         id: 1,
@@ -33,21 +34,18 @@ const bancoDeImagens = [
         id: 6,
         nome: "O poder da Oração",
         formato: "1:1",
-        url:"https://raw.githubusercontent.com/Kviktor10/barrigudawebtv/main/fotos/POST_MARIO_DOURADO.png"
+        url: "https://raw.githubusercontent.com/Kviktor10/barrigudawebtv/main/fotos/POST_MARIO_DOURADO.png"
     },
-        {
+    {
         id: 7,
         nome: "GAIOLA VÁZIA",
         formato: "1:1",
         url: "https://raw.githubusercontent.com/Kviktor10/barrigudawebtv/main/fotos/POST_PERICLES_BARRETO.png"
     },
-            {
+    {
         id: 8,
         nome: "HUMOR, CORDEL E PARÓDIA",
         formato: "1:1",
-        url:"https://raw.githubusercontent.com/Kviktor10/barrigudawebtv/main/fotos/POST_QUADRADO_GILSON_BARBOSA.png"
+        url: "https://raw.githubusercontent.com/Kviktor10/barrigudawebtv/main/fotos/POST_QUADRADO_GILSON_BARBOSA.png"
     }
 ];
-
-// Exportar para usar no script principal (opcional, dependendo de como chama no HTML)
-// Se for via script tag simples, a variável fica global.
