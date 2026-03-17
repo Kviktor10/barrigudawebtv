@@ -1,10 +1,14 @@
 document.addEventListener("DOMContentLoaded", () => {
     const container = document.getElementById("galeria");
+    renderizarCards();
+});
+
+function renderizarCards() {
+    const container = document.getElementById("galeria");
     container.innerHTML = "";
 
     bancoDeImagens.forEach(item => {
         const ratioClass = `ratio-${item.formato.replace(":", "-")}`;
-
         const card = document.createElement('div');
         card.className = 'card';
         card.innerHTML = `
@@ -15,37 +19,61 @@ document.addEventListener("DOMContentLoaded", () => {
                 <span class="formato-tag">${item.formato}</span>
                 <h3>${item.nome}</h3>
                 <div class="card-actions">
-                    <a href="${item.download}" download="${item.nome}" class="btn-download">
+                    <button class="btn-download" onclick="forçarDownload('${item.download}', '${item.nome}')">
                         <i class="fa-solid fa-download"></i> Baixar
-                    </a>
-                    <button class="btn-share" onclick="compartilhar('${item.nome}', '${item.download}')">
+                    </button>
+                    <button class="btn-share" onclick="compartilharArquivo('${item.download}', '${item.nome}')">
                         <i class="fa-solid fa-share-nodes"></i>
                     </button>
                 </div>
             </div>
         `;
-        
         container.appendChild(card);
     });
-});
+}
 
-// Função de Compartilhamento
-async function compartilhar(titulo, url) {
-    if (navigator.share) {
-        try {
+// --- FUNÇÃO PARA FORÇAR O DOWNLOAD DO ARQUIVO ---
+async function forçarDownload(url, nomeArquivo) {
+    try {
+        const resposta = await fetch(url);
+        const blob = await resposta.blob(); // Transforma a resposta em dado binário
+        const urlBlob = window.URL.createObjectURL(blob);
+        
+        const link = document.createElement('a');
+        link.href = urlBlob;
+        link.download = `${nomeArquivo}.jpg`; // Força o nome do arquivo
+        document.body.appendChild(link);
+        link.click(); // Simula o clique
+        document.body.removeChild(link);
+        
+        window.URL.revokeObjectURL(urlBlob); // Limpa a memória
+    } catch (erro) {
+        console.error("Erro ao baixar arquivo:", erro);
+        alert("Não foi possível baixar o arquivo diretamente.");
+    }
+}
+
+// --- FUNÇÃO PARA COMPARTILHAR O ARQUIVO REAL ---
+async function compartilharArquivo(url, nome) {
+    try {
+        const resposta = await fetch(url);
+        const blob = await resposta.blob();
+        
+        // Criamos um array de arquivos para a API de compartilhamento
+        const arquivo = new File([blob], `${nome}.jpg`, { type: blob.type });
+
+        if (navigator.canShare && navigator.canShare({ files: [arquivo] })) {
             await navigator.share({
-                title: titulo,
-                text: `Confira esta imagem: ${titulo}`,
-                url: url, // Link que será compartilhado
+                files: [arquivo],
+                title: nome,
+                text: `Confira este arquivo: ${nome}`
             });
-            console.log('Compartilhado com sucesso!');
-        } catch (err) {
-            console.log('Erro ao compartilhar:', err);
+        } else {
+            // Fallback caso o navegador não suporte compartilhar ARQUIVOS
+            navigator.clipboard.writeText(url);
+            alert("Seu navegador não suporta compartilhamento de arquivos. O link foi copiado!");
         }
-    } else {
-        // Caso o navegador não suporte Web Share (ex: Desktops antigos)
-        // Podemos copiar o link para a área de transferência como fallback
-        navigator.clipboard.writeText(url);
-        alert("Link copiado para a área de transferência! O seu navegador não suporta compartilhamento direto.");
+    } catch (erro) {
+        console.error("Erro ao compartilhar:", erro);
     }
 }
