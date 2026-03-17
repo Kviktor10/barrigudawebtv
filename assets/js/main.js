@@ -1,5 +1,5 @@
 // --- FUNÇÃO PARA FORÇAR O DOWNLOAD ---
-async function forçarDownload(url, nomeArquivo) {
+async function getImages(url, nomeArquivo) {
     try {
         // O segredo está no { mode: 'cors' }
         const resposta = await fetch(url, { mode: 'cors' });
