@@ -1,50 +1,72 @@
-// --- FUNÇÃO PARA FORÇAR O DOWNLOAD ---
-async function getImages(url, nomeArquivo) {
-    try {
-        // O segredo está no { mode: 'cors' }
-        const resposta = await fetch(url, { mode: 'cors' });
-        if (!resposta.ok) throw new Error('Erro na rede');
+// main.js
+document.addEventListener('DOMContentLoaded', () => {
+    renderizarGaleria();
+});
 
-        const blob = await resposta.blob();
-        const urlBlob = window.URL.createObjectURL(blob);
+function renderizarGaleria() {
+    const grid = document.getElementById('galeria');
+    grid.innerHTML = bancoDeImagens.map(item => `
+        <div class="asset-card">
+            <div class="preview-container ratio-${item.formato.replace(':', '-')}">
+                <img src="${item.url}" alt="${item.nome}" loading="lazy">
+            </div>
+            <div class="card-content">
+                <span class="format-badge">${item.formato}</span>
+                <h3>${item.nome}</h3>
+                <div class="actions">
+                    <button class="btn btn-download" onclick="executarDownload('${item.url}', '${item.nome}')">
+                        <i class="fa-solid fa-arrow-down"></i> Baixar
+                    </button>
+                    <button class="btn btn-share" onclick="executarPartilha('${item.url}', '${item.nome}')">
+                        <i class="fa-solid fa-share-nodes"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+// Lógica de Download Forçado (Blob)
+async function executarDownload(url, nome) {
+    try {
+        const response = await fetch(url);
+        const blob = await response.blob();
+        const blobUrl = window.URL.createObjectURL(blob);
         
-        const link = document.createElement('a');
-        link.href = urlBlob;
-        link.download = `${nomeArquivo}.jpg`; 
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        const tempLink = document.createElement('a');
+        tempLink.href = blobUrl;
+        tempLink.download = `${nome.replace(/\s+/g, '_').toLowerCase()}.jpg`;
+        document.body.appendChild(tempLink);
+        tempLink.click();
+        document.body.removeChild(tempLink);
         
-        window.URL.revokeObjectURL(urlBlob);
-    } catch (erro) {
-        console.warn("CORS ou erro de rede. Tentando download tradicional...", erro);
-        // Fallback: tenta baixar do jeito simples se o fetch falhar
-        const linkSimples = document.createElement('a');
-        linkSimples.href = url;
-        linkSimples.target = "_blank";
-        linkSimples.download = nomeArquivo;
-        linkSimples.click();
+        window.URL.revokeObjectURL(blobUrl);
+    } catch (err) {
+        console.error("Erro no download:", err);
+        // Fallback caso o CORS bloqueie o fetch
+        window.open(url, '_blank');
     }
 }
 
-// --- FUNÇÃO PARA COMPARTILHAR O ARQUIVO ---
-async function compartilharArquivo(url, nome) {
+// Lógica de Compartilhamento de Arquivo Real
+async function executarPartilha(url, nome) {
     try {
-        const resposta = await fetch(url, { mode: 'cors' });
-        const blob = await resposta.blob();
-        const arquivo = new File([blob], `${nome}.jpg`, { type: 'image/jpeg' });
+        const response = await fetch(url);
+        const blob = await response.blob();
+        const file = new File([blob], `${nome}.jpg`, { type: blob.type });
 
-        if (navigator.canShare && navigator.canShare({ files: [arquivo] })) {
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
             await navigator.share({
-                files: [arquivo],
+                files: [file],
                 title: nome,
-                text: `Enviando arquivo: ${nome}`
+                text: `Confira este asset: ${nome}`
             });
         } else {
-            throw new Error('Navegador não suporta compartilhamento de arquivos');
+            // Fallback: Copiar link se não suportar partilha de ficheiros
+            await navigator.clipboard.writeText(url);
+            alert("Link copiado! Seu navegador não suporta envio direto de arquivos.");
         }
-    } catch (erro) {
-        alert("O compartilhamento de arquivo direto não é suportado neste navegador/dispositivo. Copie o link!");
-        navigator.clipboard.writeText(url);
+    } catch (err) {
+        console.error("Erro ao compartilhar:", err);
     }
 }
