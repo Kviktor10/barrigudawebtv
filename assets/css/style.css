@@ -58,6 +58,13 @@ header h1 { font-weight: 800; letter-spacing: -1px; }
     text-overflow: ellipsis;
 }
 
+/* Container dos botões no rodapé do card */
+.card-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
 .formato-tag {
     display: inline-block;
     background: #000;
@@ -81,6 +88,44 @@ header h1 { font-weight: 800; letter-spacing: -1px; }
     font-weight: 600;
     font-size: 0.9rem;
     transition: opacity 0.2s;
+}
+
+.btn-download {
+    flex: 2; /* Ocupa mais espaço */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #000;
+    color: #fff;
+    text-decoration: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: 0.3s;
+}
+
+.btn-share {
+    flex: 1; /* Ocupa menos espaço */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    color: #000;
+    border: 1px solid #000;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-share:hover {
+    background: #f0f0f0;
+}
+
+.btn-download:hover {
+    background: #333;
 }
 
 .btn-download:hover { opacity: 0.8; }
