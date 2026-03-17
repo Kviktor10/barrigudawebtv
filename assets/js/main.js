@@ -26,47 +26,47 @@ function renderizarGaleria() {
     `).join('');
 }
 
-// Lógica de Download Forçado (Blob)
+// Lógica de Download Melhorada (Detecta se é PNG ou JPG)
 async function executarDownload(url, nome) {
     try {
         const response = await fetch(url);
         const blob = await response.blob();
-        const blobUrl = window.URL.createObjectURL(blob);
+        const extension = url.split('.').pop(); // Pega 'png' ou 'jpg' da URL automaticamente
         
+        const blobUrl = window.URL.createObjectURL(blob);
         const tempLink = document.createElement('a');
         tempLink.href = blobUrl;
-        tempLink.download = `${nome.replace(/\s+/g, '_').toLowerCase()}.jpg`;
+        
+        // Usa a extensão correta do arquivo original
+        tempLink.download = `${nome.replace(/\s+/g, '_').toLowerCase()}.${extension}`;
+        
         document.body.appendChild(tempLink);
         tempLink.click();
         document.body.removeChild(tempLink);
-        
         window.URL.revokeObjectURL(blobUrl);
     } catch (err) {
-        console.error("Erro no download:", err);
-        // Fallback caso o CORS bloqueie o fetch
         window.open(url, '_blank');
     }
 }
 
-// Lógica de Compartilhamento de Arquivo Real
+// Lógica de Compartilhamento Melhorada
 async function executarPartilha(url, nome) {
     try {
         const response = await fetch(url);
         const blob = await response.blob();
-        const file = new File([blob], `${nome}.jpg`, { type: blob.type });
+        const extension = url.split('.').pop();
+        const file = new File([blob], `${nome}.${extension}`, { type: blob.type });
 
         if (navigator.canShare && navigator.canShare({ files: [file] })) {
             await navigator.share({
                 files: [file],
                 title: nome,
-                text: `Confira este asset: ${nome}`
             });
         } else {
-            // Fallback: Copiar link se não suportar partilha de ficheiros
             await navigator.clipboard.writeText(url);
-            alert("Link copiado! Seu navegador não suporta envio direto de arquivos.");
+            alert("Link copiado!");
         }
     } catch (err) {
-        console.error("Erro ao compartilhar:", err);
+        console.error(err);
     }
 }
