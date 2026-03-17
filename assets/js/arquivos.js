@@ -47,5 +47,17 @@ const bancoDeImagens = [
         nome: "HUMOR, CORDEL E PARÓDIA",
         formato: "1:1",
         url: "https://raw.githubusercontent.com/Kviktor10/barrigudawebtv/main/fotos/POST_QUADRADO_GILSON_BARBOSA.png"
+    },
+        {
+        id: 9,
+        nome: "VOZES DO QUILOMBO",
+        formato: "1:1",
+        url: "https://raw.githubusercontent.com/Kviktor10/barrigudawebtv/main/fotos/WhatsApp Image 2026-03-15 at 23.39.00.jpeg"
+    },
+        {
+        id: 10,
+        nome: "VOZES DO QUILOMBO",
+        formato: "9:16",
+        url: "https://raw.githubusercontent.com/Kviktor10/barrigudawebtv/main/fotos/WhatsApp Image 2026-03-16 at 00.22.52.jpeg"
     }
 ];
